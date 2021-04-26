@@ -7,7 +7,7 @@ class Signup extends React.Component{
     constructor(){
         super();
         this.state={
-            username: "",
+            name: "",
             email: "",
             password: "",
             age:"",
@@ -31,9 +31,9 @@ class Signup extends React.Component{
     // function to get user info and store it in const
     clickSubmit= event =>{
         event.preventDefault();
-        const{username,email,password,age,job,bio,faculty,univeristy,country,city,phone}=this.state;
+        const{name,email,password,age,job,bio,faculty,univeristy,country,city,phone}=this.state;
         const user ={
-            username,
+            name,
             email,
             password,
             age,
@@ -45,13 +45,14 @@ class Signup extends React.Component{
             city,
             phone
         }
+        console.log(user);
         // sending data to sign up function
         this.singup(user)
         .then(data =>{
             if(data.error) this.setState({error:data.error});
             else this.setState({
                 error:"",
-                username:"",
+                name:"",
                 email:"",
                 password:"",
                 age:"",
@@ -70,11 +71,11 @@ class Signup extends React.Component{
     // function to send user data to backend using post request
     singup = user=>{
         return fetch("http://localhost:8080/signup",{
-             method:"POST",
-             headers:{
-                 Accept: "appilcation/json",
-                "Content-Type": "appilcation/json"
-             },
+            method: 'POST', 
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+            },
              body: JSON.stringify(user)
          })
          .then(response => {
@@ -87,17 +88,17 @@ class Signup extends React.Component{
 
   
     // Function that returns form  
-    signupForm=(username,email,password,age,job,bio,faculty,univeristy,country,city,phone)=>(
+    signupForm=(name,email,password,age,job,bio,faculty,univeristy,country,city,phone)=>(
           
         <form>
         {/* first row */}
         <div className="form-row">
         <div className="form-group col-md-5">
-            <label className="text-muted">Username</label>
-            <input onChange={this.handleChange("username")}
+            <label className="text-muted">Name</label>
+            <input onChange={this.handleChange("name")}
              type="text"
              className="form-control inputbox"
-             value={username}
+             value={name}
               /> 
         </div>
         <div className="form-group offset-md-1 col-md-5">
@@ -209,7 +210,7 @@ class Signup extends React.Component{
     )
 
     render(){
-        const {username,email,password,age,job,bio,faculty,univeristy,country,city,phone,error,accountCreated} = this.state
+        const {name,email,password,age,job,bio,faculty,univeristy,country,city,phone,error,accountCreated} = this.state
         return(
             <div className="container">
                 <h2 className="mt-5 mb-5">SignUp</h2>
@@ -220,7 +221,7 @@ class Signup extends React.Component{
                  <div className="alert alert-info" style={{display: accountCreated? "" : "none"}}> New account is successfully created.please Sign in</div>
                    
                 {/* invoking Form method here*/}
-                {this.signupForm(username,email,password,age,job,bio,faculty,univeristy,country,city,phone)}
+                {this.signupForm(name,email,password,age,job,bio,faculty,univeristy,country,city,phone)}
               
             </div>
         );
